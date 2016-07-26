@@ -18,19 +18,37 @@
         android:id="@+id/linearLayout"
         android:layout_above="@+id/fab"
         android:layout_alignParentTop="true">
-
-        <android.support.design.widget.TextInputLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/emailTextView"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/button">
+
+                <EditText
+                    android:id="@+id/emailTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:background="?android:attr/selectableItemBackground"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plus"
+                android:id="@+id/button"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

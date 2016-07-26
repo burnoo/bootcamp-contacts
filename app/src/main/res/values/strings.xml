@@ -3,4 +3,5 @@
     <string name="email">Adresat</string>
     <string name="subject">Temat</string>
     <string name="content">Treść</string>
+    <string name="plus">+</string>
 </resources>
