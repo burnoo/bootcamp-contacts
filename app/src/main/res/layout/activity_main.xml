@@ -28,7 +28,7 @@
                 android:layout_toStartOf="@+id/button">
 
                 <EditText
-                    android:id="@+id/emailTextView"
+                    android:id="@+id/emailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/subjectTextView"
+                android:id="@+id/subjectEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/contentTextView2"
+                android:id="@+id/contentEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
