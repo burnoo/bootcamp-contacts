@@ -5,11 +5,9 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity
 {
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        //git test
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
