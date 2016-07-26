@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +20,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
+    static final int PICK_CONTACT = 1;
+    private static final String GMAIL_PACKAGE = "com.google.android.gm";
     private EditText emailEditText;
     private EditText subjectEditText;
     private EditText contentEditText;
     private PackageManager packageManager;
-    private static final String GMAIL_PACKAGE = "com.google.android.gm";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,22 +43,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        if (requestCode == PICK_CONTACT)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                emailEditText.setText(getEmailById(data.getData()));
+            }
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    private void pickEmailFormContacts()
     {
-        sendEmail();
-        return super.onOptionsItemSelected(item);
+        Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Email.CONTENT_URI);
+        contactPickerIntent.setType(ContactsContract.CommonDataKinds.Email.CONTENT_TYPE);
+        startActivityForResult(contactPickerIntent, PICK_CONTACT);
     }
 
     private void checkDeepLink()
     {
-        if(getIntent().getData() != null)
+        if (getIntent().getData() != null)
         {
             String name = getIntent().getData().getHost();
             name = name.toLowerCase();
@@ -91,7 +97,17 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, validate, Toast.LENGTH_SHORT).show();
     }
 
-    @Nullable
+    private String validate(String emailString, String subjectString, String contentString)
+    {
+        String messageString = null;
+
+        if (emailString.isEmpty() || subjectString.trim().isEmpty() || contentString.trim().isEmpty())
+            messageString = getResources().getString(R.string.empty);
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches())
+            messageString = getResources().getString(R.string.wrong_email);
+        return messageString;
+    }
+
     private String getGmailClassName(List<ResolveInfo> infos)
     {
         String gmailClassName = null;
@@ -124,24 +140,35 @@ public class MainActivity extends AppCompatActivity
         subjectEditText = (EditText) findViewById(R.id.subjectEditText);
         contentEditText = (EditText) findViewById(R.id.contentEditText);
 
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.addEmailButton).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                sendEmail();
+                pickEmailFormContacts();
             }
         });
     }
 
-    private String validate(String emailString, String subjectString, String contentString)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
     {
-        String messageString = null;
-
-        if (emailString.isEmpty() || subjectString.trim().isEmpty() || contentString.trim().isEmpty())
-            messageString = getResources().getString(R.string.empty);
-        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches())
-            messageString = getResources().getString(R.string.wrong_email);
-        return messageString;
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        sendEmail();
+        return super.onOptionsItemSelected(item);
+    }
+
+    public String getEmailById(Uri result)
+    {
+        Cursor cursorEmail = getContentResolver().query(result, null, null, null, null);
+        cursorEmail.moveToFirst();
+        return cursorEmail.getString(cursorEmail.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+    }
+
 }
