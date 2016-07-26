@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bootcamp contact</string>
+    <string name="app_name">Bootcamp Contact</string>
     <string name="email">Adresat</string>
     <string name="subject">Temat</string>
     <string name="content">Treść</string>
@@ -8,4 +8,6 @@
     <string name="wrong_email">Nieprawidłowy adres email</string>
     <string name="send_email">Wyślij email</string>
     <string name="no_email_app">Brak aplikacji do obsługi email</string>
+    <string name="droidsonroids_email">%s\@droidsonroids.pl</string>
+    <string name="send">Wyślij</string>
 </resources>
